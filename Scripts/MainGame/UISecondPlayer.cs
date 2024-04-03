@@ -12,22 +12,17 @@ public class UISecondPlayer : MonoBehaviour
     public bool isTurn = false;
     private Coroutine timerCoroutine;
 
-    void Start()
-    {
-
-    }
-
     private void Update()
     {
         if (isTurn && timerCoroutine == null)
         {
-            Debug.Log("¼¼ÄÁµå ÅÏ µé¾î¿È");
-            Debug.LogFormat("<color=green>ÄÚ·çÆ¾ ½ÃÀÛ</color>");
+            Debug.Log("ì„¸ì»¨ë“œ í„´ ë“¤ì–´ì˜´");
+            Debug.LogFormat("<color=green>ì½”ë£¨í‹´ ì‹œì‘</color>");
             timerCoroutine = StartCoroutine(StartTimer());
         }
         else if (!isTurn && timerCoroutine != null)
         {
-            Debug.LogFormat("<color=yellow>ÄÚ·çÆ¾ ¸ØÃß±â</color>");
+            Debug.LogFormat("<color=yellow>ì½”ë£¨í‹´ ë©ˆì¶”ê¸°</color>");
             StopCoroutine(timerCoroutine);
             timerCoroutine = null;
             slider.value = 1;
@@ -38,32 +33,32 @@ public class UISecondPlayer : MonoBehaviour
 
     IEnumerator StartTimer()
     {
-        Debug.Log("¼¼ÄÁµå ÄÚ·çÆ¾ ½ÃÀÛ");
+        Debug.Log("ì„¸ì»¨ë“œ ì½”ë£¨í‹´ ì‹œì‘");
         float currentTime = maxTime;
 
         while (currentTime > 0)
         {
-            //½Ã°£ÀÌ Èå¸¦ ¶§¸¶´Ù °¨¼Ò
+            //ì‹œê°„ì´ íë¥¼ ë•Œë§ˆë‹¤ ê°ì†Œ
             currentTime -= Time.deltaTime;
 
-            //½½¶óÀÌ´õ °»½Å
+            //ìŠ¬ë¼ì´ë” ê°±ì‹ 
             UpdateSliderValue(currentTime);
 
             yield return null;
         }
 
-        //½Ã°£ÀÌ ´Ù µÇ¸é ¿øÇÏ´Â µ¿ÀÛ ¼öÇà
+        //ì‹œê°„ì´ ë‹¤ ë˜ë©´ ì›í•˜ëŠ” ë™ì‘ ìˆ˜í–‰
         this.isTurn = false;
         this.slider.value = 1;
-        timerCoroutine = null; //ÄÚ·çÆ¾ÀÌ ¿Ï·áµÇ¾úÀ¸¹Ç·Î null·Î ¼³Á¤
+        timerCoroutine = null; //ì½”ë£¨í‹´ì´ ì™„ë£Œë˜ì—ˆìœ¼ë¯€ë¡œ nullë¡œ ì„¤ì •
         EventDispatcher.instance.SendEvent<int>((int)EventEnum.eEventType.TimeOver, 0);
 
     }
     void UpdateSliderValue(float currentTime)
     {
-        // ½½¶óÀÌ´õ °ª °»½Å
+        // ìŠ¬ë¼ì´ë” ê°’ ê°±ì‹ 
         float normalizedTime = currentTime / maxTime;
-        slider.value = Mathf.Clamp01(normalizedTime); //0¿¡¼­ 1 »çÀÌ·Î Å¬·¥ÇÁ
-        this.txtTimer.text = ((int)(normalizedTime * maxTime)).ToString(); //Å¸ÀÌ¸Ó ÅØ½ºÆ® ¼ıÀÚ °¨¼Ò
+        slider.value = Mathf.Clamp01(normalizedTime); //0ì—ì„œ 1 ì‚¬ì´ë¡œ í´ë¨í”„
+        this.txtTimer.text = ((int)(normalizedTime * maxTime)).ToString(); //íƒ€ì´ë¨¸ í…ìŠ¤íŠ¸ ìˆ«ì ê°ì†Œ
     }
 }
